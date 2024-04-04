@@ -1,4 +1,4 @@
-package com.wanted.lunchmapservice.openApi.properties;
+package com.wanted.lunchmapservice.openapi.properties;
 
 import com.wanted.lunchmapservice.common.config.property.YamlPropertySourceFactory;
 import java.util.List;

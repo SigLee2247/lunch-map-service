@@ -1,6 +1,6 @@
-package com.wanted.lunchmapservice.openApi;
+package com.wanted.lunchmapservice.openapi;
 
-import com.wanted.lunchmapservice.openApi.properties.OpenApiProperties;
+import com.wanted.lunchmapservice.openapi.properties.OpenApiProperties;
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
