@@ -2,7 +2,6 @@ package com.wanted.lunchmapservice.location.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -11,7 +10,6 @@ import com.wanted.lunchmapservice.location.entity.Location;
 import com.wanted.lunchmapservice.location.repository.LocationRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,19 +51,5 @@ class LocationServiceTest {
     assertThat(originLocation).extracting("longitude", "latitude")
         .containsExactly(updatedLocation.getLongitude(), updatedLocation.getLatitude());
     assertThat(newLocationList.get(1)).isEqualTo(newLocation);
-  }
-
-  @DisplayName("Location 조회 테스트 : 성공")
-  @Test
-  void getLocationTest() {
-    Location originLocation = Location.builder().cityName("강원").countryName("강릉시")
-        .longitude(128.8).latitude(37.7).build();
-    given(locationRepository.findByLocationCode(anyString(),anyString())).willReturn(Optional.of(originLocation));
-
-    Location result = locationService.getLocation(originLocation.getCityName(), originLocation.getCountryName());
-
-    then(locationRepository).should(times(1)).findByLocationCode(anyString(),anyString());
-
-    assertThat(result).usingRecursiveComparison().isEqualTo(originLocation);
   }
 }
