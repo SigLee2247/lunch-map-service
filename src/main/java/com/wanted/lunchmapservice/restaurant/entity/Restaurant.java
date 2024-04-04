@@ -1,14 +1,9 @@
 package com.wanted.lunchmapservice.restaurant.entity;
 
-import com.wanted.lunchmapservice.rating.Rating;
+import com.wanted.lunchmapservice.restaurant.entity.id.RawRestaurantId;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -22,111 +17,86 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity
 public class Restaurant {
 
-    @Id
-    @Column(name = "restaurant_id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private RawRestaurantId rawRestaurantId;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "SIGUN_NM", nullable = false)
-    private String sigunNm;
+    @Column(name = "country_name", nullable = false)
+    private String countryName;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "SIGUN_CD", nullable = false)
-    private String sigunCd;
+    @Column(name = "country_code", nullable = false)
+    private String countryCode;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "BIZPLC_NM", nullable = false)
-    private String bizplcNm;
+    @Column(name = "license_date", nullable = false)
+    private String licenseDate;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "LICENSG_DE", nullable = false)
-    private String licensgDe;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "BSN_STATE_NM", nullable = false)
-    private String bsnStateNm;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "CLSBIZ_DE", nullable = false)
-    private String clsbizAr;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "LOCPLC_AR", nullable = false)
-    private String locplcAr;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "GRAD_FACLT_DIV_NM", nullable = false)
-    private String gradFacltDivNm;
+    @Column(name = "business_status", nullable = false)
+    private String businessStatus;
 
     @ColumnDefault("-1")
-    @Column(name = "MALE_ENFLPSN_CNT", nullable = false)
-    private Integer maleEnflpsnCnt;
+    @Column(name = "area", nullable = false)
+    private Double area;
+
+    @ColumnDefault("'EMPTY'")
+    @Column(name = "water_supply_facility_name", nullable = false)
+    private String waterSupplyFacilityName;
 
     @ColumnDefault("-1")
-    @Column(name = "YY", nullable = false)
-    private Integer yy;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "MULTI_USE_BIZESTBL_YN", nullable = false)
-    private String multiUseBizestblYn;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "GRAD_DIV_NM", nullable = false)
-    private String gradDivNm;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "TOT_FACLT_SCALE", nullable = false)
-    private String totFacltScale;
+    @Column(name = "male_worker_number", nullable = false)
+    private Integer maleWorkerNum;
 
     @ColumnDefault("-1")
-    @Column(name = "FEMALE_ENFLPSN_CNT", nullable = false)
-    private Integer femaleEnflpsnCnt;
+    @Column(name = "year", nullable = false)
+    private Integer year;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "BSNSITE_CIRCUMFR_DIV_NM", nullable = false)
-    private String bsnsiteCircumfrDivNm;
+    @Column(name = "is_multi_use_business", nullable = false)
+    private String multiUseBusiness;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "SANITTN_INDUTYPE_NM", nullable = false)
-    private String sanittnIndutypeNm;
+    @Column(name = "grade_name", nullable = false)
+    private String gradeName;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "SANITTN_BIZCOND_NM", nullable = false)
-    private String sanittnBizcondNm;
+    @Column(name = "total_facility_size", nullable = false)
+    private String totalFacilitySize;
 
     @ColumnDefault("-1")
-    @Column(name = "TOT_EMPLY_CNT", nullable = false)
-    private Integer totEmplyCnt;
+    @Column(name = "female_worker_number", nullable = false)
+    private Integer femaleWorkerNum;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "REFINE_LOTNO_ADDR", nullable = false)
-    private String refineLotnoArrd;
+    @Column(name = "business_place_surroundings_name", nullable = false)
+    private String businessPlaceSurroundingsName;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "REFINE_ROADNM_ADDR", nullable = false)
-    private String refineRoadnmArrd;
-
-    @ColumnDefault("-1")
-    @Column(name = "REFINE_ZIP_CD", nullable = false)
-    private Long refineZipCd;
-
-    @ColumnDefault("-1")
-    @Column(name = "REFINE_WGS84_LOGT", nullable = false)
-    private Double refineWgs84Logt;
-
-    @ColumnDefault("-1")
-    @Column(name = "REFINE_WGS84_LAT", nullable = false)
-    private Double refineWgs84Lat;
-
-    @ColumnDefault("-1")
-    @Column(name = "rating", nullable = false)
-    private Double rating;
+    @Column(name = "sanitary_business_details_name", nullable = false)
+    private String sanitaryBusinessDetailsName;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "city_name", nullable = false)
-    private String cityName;
+    @Column(name = "sanitary_business_name", nullable = false)
+    private String sanitaryBusinessName;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private List<Rating> ratingList;
+    @ColumnDefault("-1")
+    @Column(name = "total_worker_number", nullable = false)
+    private Integer totalWorkerNum;
+
+    @ColumnDefault("'EMPTY'")
+    @Column(name = "road_name_address", nullable = false)
+    private String roadNameAddress;
+
+    @ColumnDefault("-1")
+    @Column(name = "zip_code", nullable = false)
+    private String zipCode;
+
+    @ColumnDefault("-1")
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
+
+    @ColumnDefault("-1")
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
 }

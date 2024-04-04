@@ -1,8 +1,11 @@
 package com.wanted.lunchmapservice.user.entity;
 
 import com.wanted.lunchmapservice.common.BaseTime;
+import com.wanted.lunchmapservice.user.entity.enums.ServiceAccess;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,8 +39,9 @@ public class User extends BaseTime {
     @Column(name = "lon")
     private Double lon;
 
-    @ColumnDefault("'N'")
-    @Column(name = "lunch_recom")
-    private String lunchRecom;
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'NONE'")
+    @Column(name = "service_access")
+    private ServiceAccess serviceAccess;
 
 }
