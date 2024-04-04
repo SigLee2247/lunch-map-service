@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
-  @Query("select l from Location l where l.cityName LIKE :citryName% and l.countryName = :countryName")
+  @Query("select l from Location l where l.cityName LIKE :cityName% and l.countryName = :countryName")
   Optional<Location> findByLocationCode(@Param("cityName") String cityName,@Param("countryName") String countryName);
 }
