@@ -32,9 +32,12 @@ public class RestaurantScheduler {
   }
 
   private void syncRestaurantData(List<RawRestaurant> rawRestaurantList) {
+    List<Restaurant> restaurantList = restaurantRepository.findAll();
+
     for (RawRestaurant rawRestaurant : rawRestaurantList) {
-      restaurantRepository.findByNameAndLotNumberAddress(
-              rawRestaurant.getName(), rawRestaurant.getLotNumberAddress())
+      restaurantList.stream()
+          .filter(restaurant -> restaurant.isSame(rawRestaurant))
+          .findFirst()
           .ifPresentOrElse(restaurant -> updateData(rawRestaurant, restaurant),
               () -> insertData(rawRestaurant));
     }
