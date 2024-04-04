@@ -4,6 +4,7 @@ import com.wanted.lunchmapservice.location.entity.Location;
 import com.wanted.lunchmapservice.location.repository.LocationRepository;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,10 @@ public class LocationService {
   }
 
   public Location getLocation(String cityName, String countryName){
-    if(locationRepository.findByLocationCode(cityName, countryName).isPresent())
-      return locationRepository.findByLocationCode(cityName, countryName).get();
+    Optional<Location> findOptionalLocation = locationRepository.findByLocationCode(cityName,
+        countryName);
+    if(findOptionalLocation.isPresent())
+      return findOptionalLocation.get();
     else
       throw new RuntimeException("조회할 정보가 존재 하지 않습니다.");
   }
