@@ -28,3 +28,13 @@ jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-validity-in-seconds: 150
   refresh-token-validity-in-seconds: 259200
+
+
+open-api:
+  urls:
+    - https://openapi.gg.go.kr/Genrestrtlunch
+    - https://openapi.gg.go.kr/Genrestrtcate
+    - https://openapi.gg.go.kr/Genrestrtmovmntcook
+  key: 4649116924354fc182e7e611d7ba33d8
+  type: xml
+  size: 1000
