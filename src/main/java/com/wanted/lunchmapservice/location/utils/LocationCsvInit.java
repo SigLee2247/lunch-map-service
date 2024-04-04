@@ -8,6 +8,8 @@ import jakarta.annotation.PostConstruct;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -18,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class LocationCsvInit {
 
   private final LocationService locationService;
-  private final static String FILE_NAME = "static/sgg_lat_lon.csv";
+  private static final Map<String, Location> locationCacheMap = new ConcurrentHashMap<>();
+  private static final String FILE_NAME = "static/sgg_lat_lon.csv";
 
   @PostConstruct
   @Transactional
@@ -26,6 +29,9 @@ public class LocationCsvInit {
     List<Location> locationDataList = readLocationCsvData().stream()
         .map(LocationCsvDto::toEntity).toList();
     locationService.syncLocationData(locationDataList);
+    for (Location location : locationDataList) {
+      locationCacheMap.put(location.getCode(), location);
+    }
   }
 
   private List<LocationCsvDto> readLocationCsvData() {
@@ -40,8 +46,8 @@ public class LocationCsvInit {
     }
   }
 
-  public Location getLocation(String cityName, String countryName){
-    return locationService.getLocation(cityName,countryName);
+  public Location getLocation(String locationCode){
+    return locationCacheMap.get(locationCode);
   }
 
 }

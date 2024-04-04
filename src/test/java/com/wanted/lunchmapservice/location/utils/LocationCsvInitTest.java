@@ -42,6 +42,6 @@ class LocationCsvServiceTest {
     //then
     then(locationService).should(times(1)).syncLocationData(anyList());
 
-    assertThat(locationCsvInit.getLocation(location.getCityName(),location.getCountryName())).isEqualTo(location);
+    assertThat(locationCsvInit.getLocation(location.getCode())).isEqualTo(location);
   }
 }

@@ -9,10 +9,12 @@ import com.wanted.lunchmapservice.restaurant.repository.RawRestaurantRepository;
 import com.wanted.lunchmapservice.restaurant.repository.RestaurantRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class RestaurantScheduler {
@@ -44,12 +46,12 @@ public class RestaurantScheduler {
   }
 
   private void updateData(RawRestaurant rawRestaurant, Restaurant restaurant) {
-    Location location = locationCsvInit.getLocation(rawRestaurant.getCityCode(),rawRestaurant.getCountryName());
+    Location location = locationCsvInit.getLocation(rawRestaurant.getLocationCode());
     restaurant.update(location, rawRestaurant);
   }
 
   private void insertData(RawRestaurant rawRestaurant) {
-    Location location = locationCsvInit.getLocation(rawRestaurant.getCityCode(),rawRestaurant.getCountryName());
+    Location location = locationCsvInit.getLocation(rawRestaurant.getLocationCode());
     Restaurant restaurant = Restaurant.of(location, rawRestaurant);
     restaurantRepository.save(restaurant);
   }
