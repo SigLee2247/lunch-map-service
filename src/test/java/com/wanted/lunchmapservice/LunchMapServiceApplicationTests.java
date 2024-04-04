@@ -1,4 +1,4 @@
-package com.example.lunchmapservice;
+package com.wanted.lunchmapservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
