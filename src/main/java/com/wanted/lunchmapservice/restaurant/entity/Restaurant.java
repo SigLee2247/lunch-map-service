@@ -1,15 +1,17 @@
 package com.wanted.lunchmapservice.restaurant.entity;
 
+import static jakarta.persistence.GenerationType.SEQUENCE;
+
 import com.wanted.lunchmapservice.common.BaseTime;
 import com.wanted.lunchmapservice.location.entity.Location;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,9 +26,11 @@ import org.hibernate.annotations.DynamicInsert;
 @DynamicInsert
 @Entity
 public class Restaurant extends BaseTime {
+
     @Id
     @Column(name = "restaurant_id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = SEQUENCE, generator = "restaurant_seq")
+    @SequenceGenerator(name = "restaurant_seq", sequenceName = "restaurant_seq", allocationSize = 100)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
