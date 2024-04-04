@@ -9,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,9 +29,10 @@ public class Restaurant extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
 
     @ColumnDefault("'EMPTY'")
     @Column(name = "name", nullable = false)
@@ -60,4 +61,26 @@ public class Restaurant extends BaseTime {
     @ColumnDefault("-1")
     @Column(name = "average_score", nullable = false)
     private Double averageScore;
+
+    public static Restaurant of(Location location, RawRestaurant rawData) {
+        return Restaurant.builder()
+            .location(location)
+            .name(rawData.getName())
+            .lotNumberAddress(rawData.getLotNumberAddress())
+            .roadNameAddress(rawData.getRoadNameAddress())
+            .zipCode(rawData.getZipCode())
+            .longitude(rawData.getLongitude())
+            .latitude(rawData.getLatitude())
+            .averageScore(0.).build();
+    }
+
+    public void update(Location location, RawRestaurant rawData) {
+        this.location = location;
+        this.name = rawData.getName();
+        this.lotNumberAddress = rawData.getLotNumberAddress();
+        this.roadNameAddress = rawData.getRoadNameAddress();
+        this.zipCode = rawData.getZipCode();
+        this.longitude = rawData.getLongitude();
+        this.latitude = rawData.getLatitude();
+    }
 }
