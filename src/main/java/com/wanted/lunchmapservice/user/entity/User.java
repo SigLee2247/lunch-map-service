@@ -33,11 +33,11 @@ public class User extends BaseTime {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "lat")
-    private Double lat;
+    @Column(name = "latitude")
+    private Double latitude;
 
-    @Column(name = "lon")
-    private Double lon;
+    @Column(name = "longitude")
+    private Double longitude;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'NONE'")
