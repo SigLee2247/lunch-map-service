@@ -109,4 +109,17 @@ public class RawRestaurant extends BaseTime {
   @ColumnDefault("0")
   @Column(name = "latitude", nullable = false)
   private Double latitude;
+
+  public String getName() {
+    return rawRestaurantId.getName();
+  }
+
+  public String getLotNumberAddress() {
+    return rawRestaurantId.getLotNumberAddress();
+  }
+
+  //Restaurant 엔티티 저장 시 필요한 LocationCode 반환을 위한 getter
+  public String getLocationCode() {
+    return getLotNumberAddress().substring(0, 2) + " " + countryName;
+  }
 }
