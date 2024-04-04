@@ -118,6 +118,9 @@ public class RawRestaurant extends BaseTime {
     return rawRestaurantId.getLotNumberAddress();
   }
 
+  public String getCityCode() {
+    return getLotNumberAddress().substring(0, 2);
+  }
   //Restaurant 엔티티 저장 시 필요한 LocationCode 반환을 위한 getter
   public String getLocationCode() {
     return getLotNumberAddress().substring(0, 2) + " " + countryName;

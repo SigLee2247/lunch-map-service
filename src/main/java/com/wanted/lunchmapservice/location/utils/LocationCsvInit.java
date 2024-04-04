@@ -39,4 +39,12 @@ public class LocationCsvInit {
       return List.of();
     }
   }
+
+  public Location getLocation(String cityName, String countryName){
+    if(locationRepository.findByLocationCode(cityName, countryName).isPresent())
+      return locationRepository.findByLocationCode(cityName, countryName).get();
+    else
+      throw new RuntimeException("조회할 정보가 존재 하지 않습니다.");
+  }
+
 }
