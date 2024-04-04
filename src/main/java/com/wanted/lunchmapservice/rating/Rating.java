@@ -1,5 +1,6 @@
 package com.wanted.lunchmapservice.rating;
 
+import com.wanted.lunchmapservice.common.BaseTime;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import com.wanted.lunchmapservice.user.entity.User;
 import jakarta.persistence.Column;
@@ -23,7 +24,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Getter
 @DynamicInsert
 @Entity
-public class Rating {
+public class Rating extends BaseTime {
 
     @Id
     @Column(name = "rating_id", updatable = false)

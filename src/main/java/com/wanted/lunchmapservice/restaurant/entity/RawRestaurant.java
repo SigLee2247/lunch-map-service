@@ -2,6 +2,7 @@ package com.wanted.lunchmapservice.restaurant.entity;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+import com.wanted.lunchmapservice.common.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Builder
 @DynamicInsert
 @Entity
-public class RawRestaurant {
+public class RawRestaurant extends BaseTime {
 
   @Id
   @Column(name = "name", updatable = false)
