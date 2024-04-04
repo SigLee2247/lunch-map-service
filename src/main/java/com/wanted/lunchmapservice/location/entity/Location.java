@@ -39,4 +39,7 @@ public class Location extends BaseTime {
     @Column(name = "latitude", nullable = false)
     private Double latitude;
 
+    public String getCode() {
+        return cityName.substring(0, 2) + " " + countryName;
+    }
 }
