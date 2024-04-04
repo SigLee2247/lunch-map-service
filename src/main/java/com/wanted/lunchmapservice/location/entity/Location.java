@@ -42,4 +42,11 @@ public class Location extends BaseTime {
     public String getCode() {
         return cityName.substring(0, 2) + " " + countryName;
     }
+
+    public void update(Location newLocation) {
+        this.cityName = newLocation.getCityName();
+        this.countryName = newLocation.getCountryName();
+        this.longitude = newLocation.getLongitude();
+        this.latitude = newLocation.getLatitude();
+    }
 }

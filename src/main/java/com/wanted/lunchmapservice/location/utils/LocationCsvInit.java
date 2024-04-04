@@ -2,7 +2,7 @@ package com.wanted.lunchmapservice.location.utils;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.wanted.lunchmapservice.location.entity.Location;
-import com.wanted.lunchmapservice.location.repository.LocationRepository;
+import com.wanted.lunchmapservice.location.service.LocationService;
 import com.wanted.lunchmapservice.location.utils.dto.LocationCsvDto;
 import jakarta.annotation.PostConstruct;
 import java.io.FileReader;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LocationCsvInit {
 
-  private final LocationRepository locationRepository;
+  private final LocationService locationService;
   private final static String FILE_NAME = "static/sgg_lat_lon.csv";
 
   @PostConstruct
@@ -25,7 +25,7 @@ public class LocationCsvInit {
   public void storeLocationCsvData() {
     List<Location> locationDataList = readLocationCsvData().stream()
         .map(LocationCsvDto::toEntity).toList();
-    locationRepository.saveAll(locationDataList);
+    locationService.syncLocationData(locationDataList);
   }
 
   private List<LocationCsvDto> readLocationCsvData() {
@@ -41,10 +41,7 @@ public class LocationCsvInit {
   }
 
   public Location getLocation(String cityName, String countryName){
-    if(locationRepository.findByLocationCode(cityName, countryName).isPresent())
-      return locationRepository.findByLocationCode(cityName, countryName).get();
-    else
-      throw new RuntimeException("조회할 정보가 존재 하지 않습니다.");
+    return locationService.getLocation(cityName,countryName);
   }
 
 }
