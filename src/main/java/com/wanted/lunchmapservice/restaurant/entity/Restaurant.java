@@ -1,95 +1,56 @@
 package com.wanted.lunchmapservice.restaurant.entity;
 
+import static jakarta.persistence.GenerationType.SEQUENCE;
+
 import com.wanted.lunchmapservice.common.BaseTime;
-import com.wanted.lunchmapservice.restaurant.entity.id.RawRestaurantId;
+import com.wanted.lunchmapservice.location.entity.Location;
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @DynamicInsert
 @Entity
-public class Restaurant extends BaseTime{
+public class Restaurant extends BaseTime {
 
-    @EmbeddedId
-    private RawRestaurantId rawRestaurantId;
+    @Id
+    @Column(name = "restaurant_id", updatable = false)
+    @GeneratedValue(strategy = SEQUENCE, generator = "restaurant_seq")
+    @SequenceGenerator(name = "restaurant_seq", sequenceName = "restaurant_seq", allocationSize = 100)
+    private Long id;
 
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "country_name", nullable = false)
-    private String countryName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "country_code", nullable = false)
-    private String countryCode;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "license_date", nullable = false)
-    private String licenseDate;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "business_status", nullable = false)
-    private String businessStatus;
-
-    @ColumnDefault("-1")
-    @Column(name = "area", nullable = false)
-    private Double area;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "water_supply_facility_name", nullable = false)
-    private String waterSupplyFacilityName;
-
-    @ColumnDefault("-1")
-    @Column(name = "male_worker_number", nullable = false)
-    private Integer maleWorkerNum;
-
-    @ColumnDefault("-1")
-    @Column(name = "year", nullable = false)
-    private Integer year;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "is_multi_use_business", nullable = false)
-    private String multiUseBusiness;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "grade_name", nullable = false)
-    private String gradeName;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "total_facility_size", nullable = false)
-    private String totalFacilitySize;
-
-    @ColumnDefault("-1")
-    @Column(name = "female_worker_number", nullable = false)
-    private Integer femaleWorkerNum;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "business_place_surroundings_name", nullable = false)
-    private String businessPlaceSurroundingsName;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "sanitary_business_details_name", nullable = false)
-    private String sanitaryBusinessDetailsName;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "sanitary_business_name", nullable = false)
-    private String sanitaryBusinessName;
-
-    @ColumnDefault("-1")
-    @Column(name = "total_worker_number", nullable = false)
-    private Integer totalWorkerNum;
+    @Column(name = "lot_number_address", nullable = false)
+    private String lotNumberAddress;
 
     @ColumnDefault("'EMPTY'")
     @Column(name = "road_name_address", nullable = false)
     private String roadNameAddress;
 
-    @ColumnDefault("-1")
+    @ColumnDefault("'EMPTY'")
     @Column(name = "zip_code", nullable = false)
     private String zipCode;
 
@@ -100,4 +61,36 @@ public class Restaurant extends BaseTime{
     @ColumnDefault("-1")
     @Column(name = "latitude", nullable = false)
     private Double latitude;
+
+    @ColumnDefault("-1")
+    @Column(name = "average_score", nullable = false)
+    private Double averageScore;
+
+    public static Restaurant of(Location location, RawRestaurant rawData) {
+        return Restaurant.builder()
+            .location(location)
+            .name(rawData.getName())
+            .lotNumberAddress(rawData.getLotNumberAddress())
+            .roadNameAddress(rawData.getRoadNameAddress())
+            .zipCode(rawData.getZipCode())
+            .longitude(rawData.getLongitude())
+            .latitude(rawData.getLatitude())
+            .averageScore(0.).build();
+    }
+
+    public boolean isSame(RawRestaurant rawRestaurant) {
+        return name.equals(rawRestaurant.getName())
+            && lotNumberAddress.equals(rawRestaurant.getLotNumberAddress());
+    }
+
+
+    public void update(Location location, RawRestaurant rawData) {
+        this.location = location;
+        this.name = rawData.getName();
+        this.lotNumberAddress = rawData.getLotNumberAddress();
+        this.roadNameAddress = rawData.getRoadNameAddress();
+        this.zipCode = rawData.getZipCode();
+        this.longitude = rawData.getLongitude();
+        this.latitude = rawData.getLatitude();
+    }
 }

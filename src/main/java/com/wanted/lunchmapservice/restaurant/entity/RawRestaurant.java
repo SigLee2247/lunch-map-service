@@ -1,35 +1,30 @@
 package com.wanted.lunchmapservice.restaurant.entity;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
 
 import com.wanted.lunchmapservice.common.BaseTime;
+import com.wanted.lunchmapservice.restaurant.entity.id.RawRestaurantId;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+@DynamicUpdate
+@DynamicInsert
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@DynamicInsert
 @Entity
 public class RawRestaurant extends BaseTime {
 
-  @Id
-  @Column(name = "name", updatable = false)
-  @GeneratedValue(strategy = IDENTITY)
-  private String name;
-
-  @Id
-  @Column(name = "lot_number_address", nullable = false)
-  private String lotNumberAddress;
+  @EmbeddedId
+  private RawRestaurantId rawRestaurantId;
 
   @ColumnDefault("'EMPTY'")
   @Column(name = "country_name", nullable = false)
@@ -47,25 +42,29 @@ public class RawRestaurant extends BaseTime {
   @Column(name = "business_status", nullable = false)
   private String businessStatus;
 
-  @ColumnDefault("-1")
+  @ColumnDefault("'EMPTY'")
+  @Column(name = "closure_date", nullable = false)
+  private String closureDate;
+
+  @ColumnDefault("'EMPTY'")
   @Column(name = "area", nullable = false)
-  private Double area;
+  private String area;
 
   @ColumnDefault("'EMPTY'")
   @Column(name = "water_supply_facility_name", nullable = false)
   private String waterSupplyFacilityName;
 
-  @ColumnDefault("-1")
+  @ColumnDefault("0")
   @Column(name = "male_worker_number", nullable = false)
-  private Integer maleWorkerNum;
+  private Integer maleWorkerNumber;
 
-  @ColumnDefault("-1")
+  @ColumnDefault("0")
   @Column(name = "year", nullable = false)
   private Integer year;
 
   @ColumnDefault("'EMPTY'")
   @Column(name = "is_multi_use_business", nullable = false)
-  private String multiUseBusiness;
+  private String isMultiUseBusiness;
 
   @ColumnDefault("'EMPTY'")
   @Column(name = "grade_name", nullable = false)
@@ -75,9 +74,9 @@ public class RawRestaurant extends BaseTime {
   @Column(name = "total_facility_size", nullable = false)
   private String totalFacilitySize;
 
-  @ColumnDefault("-1")
+  @ColumnDefault("0")
   @Column(name = "female_worker_number", nullable = false)
-  private Integer femaleWorkerNum;
+  private Integer femaleWorkerNumber;
 
   @ColumnDefault("'EMPTY'")
   @Column(name = "business_place_surroundings_name", nullable = false)
@@ -91,24 +90,39 @@ public class RawRestaurant extends BaseTime {
   @Column(name = "sanitary_business_name", nullable = false)
   private String sanitaryBusinessName;
 
-  @ColumnDefault("-1")
+  @ColumnDefault("0")
   @Column(name = "total_worker_number", nullable = false)
-  private Integer totalWorkerNum;
+  private Integer totalWorkerNumber;
 
   @ColumnDefault("'EMPTY'")
   @Column(name = "road_name_address", nullable = false)
   private String roadNameAddress;
 
-  @ColumnDefault("-1")
+  @ColumnDefault("'EMPTY'")
   @Column(name = "zip_code", nullable = false)
   private String zipCode;
 
-  @ColumnDefault("-1")
+  @ColumnDefault("0")
   @Column(name = "longitude", nullable = false)
   private Double longitude;
 
-  @ColumnDefault("-1")
+  @ColumnDefault("0")
   @Column(name = "latitude", nullable = false)
   private Double latitude;
 
+  public String getName() {
+    return rawRestaurantId.getName();
+  }
+
+  public String getLotNumberAddress() {
+    return rawRestaurantId.getLotNumberAddress();
+  }
+
+  public String getCityCode() {
+    return getLotNumberAddress().substring(0, 2);
+  }
+  //Restaurant 엔티티 저장 시 필요한 LocationCode 반환을 위한 getter
+  public String getLocationCode() {
+    return getLotNumberAddress().substring(0, 2) + " " + countryName;
+  }
 }
