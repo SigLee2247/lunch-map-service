@@ -39,7 +39,7 @@ class RestaurantGetServiceTest {
     long requestId = 1L;
     Restaurant afterRepository = mock.getEntity(requestId);
 
-    given(repository.findById(anyLong())).willReturn(Optional.of(afterRepository));
+    given(repository.findByIdFetch(anyLong())).willReturn(Optional.of(afterRepository));
     // when
     var result = service.getDetails(requestId);
     // then
@@ -62,7 +62,7 @@ class RestaurantGetServiceTest {
   void get_restaurant_detail_fail_test() {
     // given
     long requestId = 1L;
-    given(repository.findById(anyLong())).willReturn(Optional.empty());
+    given(repository.findByIdFetch(anyLong())).willReturn(Optional.empty());
     // when
     // then
     assertThatThrownBy(() -> service.getDetails(requestId))

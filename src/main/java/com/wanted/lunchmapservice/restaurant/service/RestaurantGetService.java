@@ -32,7 +32,7 @@ public class RestaurantGetService {
   }
 
   private Restaurant validRestaurant(Long restaurantId) {
-    return repository.findById(restaurantId)
+    return repository.findByIdFetch(restaurantId)
         .orElseThrow(() -> new CommonException(HttpStatus.CONFLICT, "맛집 정보가 존재하지 않습니다."));
   }
 }
