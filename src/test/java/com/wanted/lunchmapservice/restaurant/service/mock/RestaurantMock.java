@@ -1,4 +1,4 @@
-package com.wanted.lunchmapservice.restaurant.scheduler.mock;
+package com.wanted.lunchmapservice.restaurant.service.mock;
 
 import com.wanted.lunchmapservice.location.entity.Location;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;

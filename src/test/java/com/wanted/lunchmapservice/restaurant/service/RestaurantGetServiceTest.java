@@ -6,10 +6,10 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 import com.wanted.lunchmapservice.common.exception.CommonException;
-import com.wanted.lunchmapservice.restaurant.config.RestaurantServiceTestConfig;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import com.wanted.lunchmapservice.restaurant.repository.RestaurantRepository;
-import com.wanted.lunchmapservice.restaurant.scheduler.mock.RestaurantMock;
+import com.wanted.lunchmapservice.restaurant.service.config.RestaurantServiceTestConfig;
+import com.wanted.lunchmapservice.restaurant.service.mock.RestaurantMock;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
