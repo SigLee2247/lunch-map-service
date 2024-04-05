@@ -1,19 +1,25 @@
 package com.wanted.lunchmapservice.restaurant.entity;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 import com.wanted.lunchmapservice.common.BaseTime;
 import com.wanted.lunchmapservice.location.entity.Location;
+import com.wanted.lunchmapservice.rating.Rating;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -32,11 +38,6 @@ public class Restaurant extends BaseTime {
     @GeneratedValue(strategy = SEQUENCE, generator = "restaurant_seq")
     @SequenceGenerator(name = "restaurant_seq", sequenceName = "restaurant_seq", allocationSize = 100)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
-
 
     @ColumnDefault("'EMPTY'")
     @Column(name = "name", nullable = false)
@@ -66,6 +67,15 @@ public class Restaurant extends BaseTime {
     @Column(name = "average_score", nullable = false)
     private Double averageScore;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @Default
+    @OneToMany(fetch = LAZY, cascade = CascadeType.PERSIST, mappedBy = "restaurant")
+    private List<Rating> ratingList = new ArrayList<>();
+
+
     public static Restaurant of(Location location, RawRestaurant rawData) {
         return Restaurant.builder()
             .location(location)
@@ -83,7 +93,6 @@ public class Restaurant extends BaseTime {
             && lotNumberAddress.equals(rawRestaurant.getLotNumberAddress());
     }
 
-
     public void update(Location location, RawRestaurant rawData) {
         this.location = location;
         this.name = rawData.getName();
@@ -92,5 +101,9 @@ public class Restaurant extends BaseTime {
         this.zipCode = rawData.getZipCode();
         this.longitude = rawData.getLongitude();
         this.latitude = rawData.getLatitude();
+    }
+
+    public void sortRatingList() {
+        ratingList.sort((d1, d2) -> d2.getId().compareTo(d1.getId()));
     }
 }
