@@ -10,5 +10,6 @@ public interface RestaurantQueryRepository {
   Page<Restaurant> findPageByFilter(Pageable pageable, RequestRestaurantGetFilterDto condition);
 
   Page<Restaurant> findNearByRestaurant(NearRestaurantRequestDto dto, Pageable pageable);
+  Page<Restaurant> findNearByRestaurantV2(NearRestaurantRequestDto dto, Pageable pageable);
 
 }

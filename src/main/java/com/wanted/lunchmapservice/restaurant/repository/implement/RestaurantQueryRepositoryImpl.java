@@ -2,6 +2,7 @@ package com.wanted.lunchmapservice.restaurant.repository.implement;
 
 import static com.wanted.lunchmapservice.location.entity.QLocation.location;
 import static com.wanted.lunchmapservice.restaurant.entity.QRestaurant.restaurant;
+import static com.wanted.lunchmapservice.restaurant.repository.util.GeoLocationUtil.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -71,6 +72,29 @@ public class RestaurantQueryRepositoryImpl implements RestaurantQueryRepository 
     return PageableExecutionUtils.getPage(nearByRestaurants, pageable, count::fetchOne);
   }
 
+  public Page<Restaurant> findNearByRestaurantV2(NearRestaurantRequestDto dto, Pageable pageable) {
+    Double userLat = Double.parseDouble(dto.getCurrentLatitude());
+    Double userLng = Double.parseDouble(dto.getCurrentLongitude());
+
+    List<Restaurant> nearByRestaurants = query
+        .select(restaurant)
+        .from(restaurant)
+        .where(
+            restaurant.latitude.between(userLat - getDiffLatitude(dto.getRange()), userLat + getDiffLatitude(dto.getRange()))
+                .and(
+                restaurant.longitude.between(userLng - getDiffLongitude(userLat, dto.getRange()), userLng + getDiffLongitude(userLat, dto.getRange()))
+            )
+             // 올바른 범위 지정
+        )
+        .orderBy(getOrderByExpression(userLat, userLng, pageable.getSort()))
+        .fetch();
+
+    JPAQuery<Long> count = query.select(restaurant.count())
+        .from(restaurant)
+        .where(acosExpression(userLat, userLng).loe(dto.getRange()));
+
+    return PageableExecutionUtils.getPage(nearByRestaurants, pageable, count::fetchOne);
+  }
 
   //추 후 정렬 조건이 늘어나면 추가 예정
   private OrderSpecifier<?> getOrderByExpression(Double userLat, Double userLng, Sort sort) {
