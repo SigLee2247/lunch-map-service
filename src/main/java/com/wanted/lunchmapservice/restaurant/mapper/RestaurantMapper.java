@@ -9,6 +9,7 @@ import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestauran
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantSimpleDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseLocationDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseRatingDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.RestaurantResponseDto;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,38 @@ public class RestaurantMapper {
         .build();
   }
 
+  public ResponseDto<CustomPage<RestaurantResponseDto>> toResponseNearDto(
+      Page<Restaurant> entityPage) {
+    return ResponseDto.<CustomPage<RestaurantResponseDto>>builder()
+        .data(toNearCustomPageDto(entityPage))
+        .code(HttpStatus.OK.value())
+        .message(HttpStatus.OK.getReasonPhrase())
+        .build();
+  }
+
+  public RestaurantResponseDto toRestaurantResponseDto(Restaurant restaurant) {
+    return RestaurantResponseDto.builder()
+        .id(restaurant.getId())
+        .locationId(restaurant.getLocation().getId())
+        .name(restaurant.getName())
+        .lotNumberAddress(restaurant.getLotNumberAddress())
+        .roadNameAddress(restaurant.getRoadNameAddress())
+        .zipCode(restaurant.getZipCode())
+        .latitude(restaurant.getLatitude())
+        .longitude(restaurant.getLongitude())
+        .averageScore(restaurant.getAverageScore())
+        .build();
+  }
+
+  private CustomPage<RestaurantResponseDto> toNearCustomPageDto(
+      Page<Restaurant> entityPage) {
+    return new CustomPage<>(toGetNearListDto(entityPage.getContent()),
+        new PageInfo(entityPage.getPageable().getOffset(), entityPage.getSize(),
+            entityPage.getTotalElements(), entityPage.isFirst(),
+            entityPage.getNumberOfElements(), entityPage.isFirst(),
+            entityPage.getTotalPages()));
+  }
+
   private CustomPage<ResponseGetRestaurantSimpleDto> toCustomPageDto(Page<Restaurant> entityPage) {
     return new CustomPage<>(toGetListDto(entityPage.getContent()),
         new PageInfo(entityPage.getPageable().getOffset(), entityPage.getSize(),
@@ -47,6 +80,10 @@ public class RestaurantMapper {
 
   private List<ResponseGetRestaurantSimpleDto> toGetListDto(List<Restaurant> entityList) {
     return entityList.stream().map(this::toGetSimpleDto).toList();
+  }
+
+  private List<RestaurantResponseDto> toGetNearListDto(List<Restaurant> entityList) {
+    return entityList.stream().map(this::toRestaurantResponseDto).toList();
   }
 
   private ResponseGetRestaurantSimpleDto toGetSimpleDto(Restaurant entity) {

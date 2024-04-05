@@ -4,8 +4,10 @@ import com.wanted.lunchmapservice.common.dto.CustomPage;
 import com.wanted.lunchmapservice.common.dto.ResponseDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantDetailDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantSimpleDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.RestaurantResponseDto;
 import com.wanted.lunchmapservice.restaurant.repository.dto.RequestRestaurantGetFilterDto;
 import com.wanted.lunchmapservice.restaurant.service.RestaurantGetService;
+import com.wanted.lunchmapservice.restaurant.controller.dto.NearRestaurantRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +35,10 @@ public class RestaurantController {
     return ResponseEntity.ok(getService.getRestaurant(request, pageable));
   }
 
+  @GetMapping("/nearby")
+  public ResponseEntity<ResponseDto<CustomPage<RestaurantResponseDto>>> getRecommendedRestaurant(@ModelAttribute
+  NearRestaurantRequestDto dto, Pageable pageable) {
+    return ResponseEntity.ok(getService.findNearbyRestaurant(dto,pageable));
+  }
 }
 
