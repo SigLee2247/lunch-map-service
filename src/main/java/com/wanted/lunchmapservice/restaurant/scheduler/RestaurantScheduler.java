@@ -35,7 +35,6 @@ public class RestaurantScheduler {
 
   private void syncRestaurantData(List<RawRestaurant> rawRestaurantList) {
     List<Restaurant> restaurantList = restaurantRepository.findAll();
-
     for (RawRestaurant rawRestaurant : rawRestaurantList) {
       restaurantList.stream()
           .filter(restaurant -> restaurant.isSame(rawRestaurant))
