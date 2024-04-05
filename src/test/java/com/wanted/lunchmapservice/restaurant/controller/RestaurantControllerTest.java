@@ -1,19 +1,16 @@
 package com.wanted.lunchmapservice.restaurant.controller;
 
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wanted.lunchmapservice.common.config.SecurityConfig;
 import com.wanted.lunchmapservice.common.security.service.UserDetailsServiceImpl;
-import com.wanted.lunchmapservice.common.security.vo.Principal;
 import com.wanted.lunchmapservice.restaurant.controller.config.RestaurantControllerTestConfig;
 import com.wanted.lunchmapservice.restaurant.controller.mock.AuthMock;
 import com.wanted.lunchmapservice.restaurant.service.RestaurantGetService;
 import com.wanted.lunchmapservice.restaurant.service.mock.RestaurantMock;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -22,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.HttpHeaders;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -47,16 +44,9 @@ class RestaurantControllerTest {
   RestaurantGetService getService;
   @MockBean
   UserDetailsServiceImpl detailsService;
-  String accessToken;
-  Principal principal;
-
-  @BeforeEach
-  void init() {
-    accessToken = authMock.createAccessToken();
-    principal = authMock.creatUserDetails();
-  }
 
   @Test
+  @WithMockUser
   @DisplayName("맛집 상세 조회 서비스 테스트")
   void get_restaurant_detail_success_test() throws Exception {
     // given
@@ -64,11 +54,9 @@ class RestaurantControllerTest {
 
     BDDMockito.given(getService.getDetails(anyLong()))
         .willReturn(mock.getDetailResponse(requestId));
-    BDDMockito.given(detailsService.loadUserByUsername(anyString())).willReturn(principal);
     // when
     ResultActions perform = mvc.perform(
-        MockMvcRequestBuilders.get(DEFAULT_URL + "/{restaurantId}", requestId).header(
-            HttpHeaders.AUTHORIZATION, accessToken));
+        MockMvcRequestBuilders.get(DEFAULT_URL + "/{restaurantId}", requestId));
     // then
     perform
         .andDo(MockMvcResultHandlers.log())
@@ -94,7 +82,6 @@ class RestaurantControllerTest {
     // given
     Long requestId = 1L;
 
-    BDDMockito.given(detailsService.loadUserByUsername(anyString())).willReturn(principal);
     // when
     ResultActions perform = mvc.perform(
         MockMvcRequestBuilders.get(DEFAULT_URL + "/{restaurantId}", requestId));
