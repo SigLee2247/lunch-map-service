@@ -40,7 +40,7 @@ public class RestaurantGetService {
 
   public ResponseDto<CustomPage<RestaurantResponseDto>> findNearbyRestaurant(
       NearRestaurantRequestDto dto,Pageable pageable) {
-    return mapper.toResponseNearDto(repository.findNearByRestaurant(dto, pageable));
+    return mapper.toResponseNearDto(repository.findNearByRestaurantV2(dto, pageable));
   }
 }
 
