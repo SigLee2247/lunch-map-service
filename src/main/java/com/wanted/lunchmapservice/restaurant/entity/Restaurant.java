@@ -9,7 +9,6 @@ import com.wanted.lunchmapservice.rating.Rating;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -23,7 +22,6 @@ import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -40,11 +38,6 @@ public class Restaurant extends BaseTime {
     @GeneratedValue(strategy = SEQUENCE, generator = "restaurant_seq")
     @SequenceGenerator(name = "restaurant_seq", sequenceName = "restaurant_seq", allocationSize = 100)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
-
 
     @ColumnDefault("'EMPTY'")
     @Column(name = "name", nullable = false)
@@ -74,10 +67,14 @@ public class Restaurant extends BaseTime {
     @Column(name = "average_score", nullable = false)
     private Double averageScore;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
+
     @Default
-    @Setter
-    @OneToMany(fetch = LAZY,cascade = CascadeType.PERSIST,mappedBy = "restaurant")
+    @OneToMany(fetch = LAZY, cascade = CascadeType.PERSIST, mappedBy = "restaurant")
     private List<Rating> ratingList = new ArrayList<>();
+
 
     public static Restaurant of(Location location, RawRestaurant rawData) {
         return Restaurant.builder()
