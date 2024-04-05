@@ -9,7 +9,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import com.wanted.lunchmapservice.restaurant.repository.RestaurantQueryRepository;
-import com.wanted.lunchmapservice.restaurant.repository.dto.RestaurantGetFilterDto;
+import com.wanted.lunchmapservice.restaurant.repository.dto.RequestRestaurantGetFilterDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ public class RestaurantQueryRepositoryImpl implements RestaurantQueryRepository 
   private final JPAQueryFactory query;
 
   @Override
-  public Page<Restaurant> findPageByFilter(Pageable pageable, RestaurantGetFilterDto condition){
+  public Page<Restaurant> findPageByFilter(Pageable pageable, RequestRestaurantGetFilterDto condition){
     List<Restaurant> content = query
         .selectFrom(restaurant)
         .join(restaurant.location,location).fetchJoin()

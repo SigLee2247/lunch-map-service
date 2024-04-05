@@ -2,8 +2,8 @@ package com.wanted.lunchmapservice.restaurant.service.mock;
 
 import com.wanted.lunchmapservice.common.dto.ResponseDto;
 import com.wanted.lunchmapservice.location.entity.Location;
-import com.wanted.lunchmapservice.restaurant.controller.dto.GetRestaurantDetailResponseDto;
-import com.wanted.lunchmapservice.restaurant.controller.dto.LocationDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantDetailDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseLocationDto;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -38,16 +38,16 @@ public class RestaurantMock {
   }
 
 
-  public ResponseDto<GetRestaurantDetailResponseDto> getDetailResponse(Long id) {
-    return ResponseDto.<GetRestaurantDetailResponseDto>builder()
+  public ResponseDto<ResponseGetRestaurantDetailDto> getDetailResponse(Long id) {
+    return ResponseDto.<ResponseGetRestaurantDetailDto>builder()
         .data(createGetDetailDto(id))
         .message(HttpStatus.OK.getReasonPhrase())
         .code(HttpStatus.OK.value())
         .build();
   }
 
-  private GetRestaurantDetailResponseDto createGetDetailDto(Long id) {
-    return GetRestaurantDetailResponseDto.builder()
+  private ResponseGetRestaurantDetailDto createGetDetailDto(Long id) {
+    return ResponseGetRestaurantDetailDto.builder()
         .restaurantId(getEntity(id).getId())
         .averageScore(getEntity(id).getAverageScore())
         .restaurantName(getEntity(id).getName())
@@ -60,8 +60,8 @@ public class RestaurantMock {
         .build();
   }
 
-  private LocationDto createLocationDto(Location entity) {
-    return LocationDto.builder()
+  private ResponseLocationDto createLocationDto(Location entity) {
+    return ResponseLocationDto.builder()
         .cityName(entity.getCityName())
         .countryName(entity.getCountryName())
         .longitude(entity.getLongitude())

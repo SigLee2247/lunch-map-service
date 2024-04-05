@@ -5,10 +5,10 @@ import com.wanted.lunchmapservice.common.dto.PageInfo;
 import com.wanted.lunchmapservice.common.dto.ResponseDto;
 import com.wanted.lunchmapservice.location.entity.Location;
 import com.wanted.lunchmapservice.rating.Rating;
-import com.wanted.lunchmapservice.restaurant.controller.dto.GetRestaurantDetailResponseDto;
-import com.wanted.lunchmapservice.restaurant.controller.dto.GetRestaurantSimpleResponseDto;
-import com.wanted.lunchmapservice.restaurant.controller.dto.LocationDto;
-import com.wanted.lunchmapservice.restaurant.controller.dto.RatingDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantDetailDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantSimpleDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseLocationDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseRatingDto;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RestaurantMapper {
 
-  public ResponseDto<GetRestaurantDetailResponseDto> toResponseDto(Restaurant entity) {
-    return ResponseDto.<GetRestaurantDetailResponseDto>builder()
+  public ResponseDto<ResponseGetRestaurantDetailDto> toResponseDto(Restaurant entity) {
+    return ResponseDto.<ResponseGetRestaurantDetailDto>builder()
         .data(toDto(entity))
         .message(HttpStatus.OK.getReasonPhrase())
         .code(HttpStatus.OK.value())
@@ -27,16 +27,16 @@ public class RestaurantMapper {
   }
 
 
-  public ResponseDto<CustomPage<GetRestaurantSimpleResponseDto>> toResponseDto(
+  public ResponseDto<CustomPage<ResponseGetRestaurantSimpleDto>> toResponseDto(
       Page<Restaurant> entityPage) {
-    return ResponseDto.<CustomPage<GetRestaurantSimpleResponseDto>>builder()
+    return ResponseDto.<CustomPage<ResponseGetRestaurantSimpleDto>>builder()
         .data(toCustomPageDto(entityPage))
         .code(HttpStatus.OK.value())
         .message(HttpStatus.OK.getReasonPhrase())
         .build();
   }
 
-  private CustomPage<GetRestaurantSimpleResponseDto> toCustomPageDto(Page<Restaurant> entityPage) {
+  private CustomPage<ResponseGetRestaurantSimpleDto> toCustomPageDto(Page<Restaurant> entityPage) {
     return new CustomPage<>(toGetListDto(entityPage.getContent()),
         new PageInfo(entityPage.getPageable().getOffset(), entityPage.getSize(),
             entityPage.getTotalElements(), entityPage.isFirst(),
@@ -45,12 +45,12 @@ public class RestaurantMapper {
 
   }
 
-  private List<GetRestaurantSimpleResponseDto> toGetListDto(List<Restaurant> entityList) {
+  private List<ResponseGetRestaurantSimpleDto> toGetListDto(List<Restaurant> entityList) {
     return entityList.stream().map(this::toGetSimpleDto).toList();
   }
 
-  private GetRestaurantSimpleResponseDto toGetSimpleDto(Restaurant entity) {
-    return GetRestaurantSimpleResponseDto.builder()
+  private ResponseGetRestaurantSimpleDto toGetSimpleDto(Restaurant entity) {
+    return ResponseGetRestaurantSimpleDto.builder()
         .restaurantId(entity.getId())
         .restaurantName(entity.getName())
         .lotNumberAddress(entity.getLotNumberAddress())
@@ -62,8 +62,8 @@ public class RestaurantMapper {
         .build();
   }
 
-  private GetRestaurantDetailResponseDto toDto(Restaurant entity) {
-    return GetRestaurantDetailResponseDto.builder()
+  private ResponseGetRestaurantDetailDto toDto(Restaurant entity) {
+    return ResponseGetRestaurantDetailDto.builder()
         .restaurantId(entity.getId())
         .averageScore(entity.getAverageScore())
         .restaurantName(entity.getName())
@@ -77,8 +77,8 @@ public class RestaurantMapper {
         .build();
   }
 
-  private LocationDto toDto(Location entity) {
-    return LocationDto.builder()
+  private ResponseLocationDto toDto(Location entity) {
+    return ResponseLocationDto.builder()
         .cityName(entity.getCityName())
         .countryName(entity.getCountryName())
         .longitude(entity.getLongitude())
@@ -86,12 +86,12 @@ public class RestaurantMapper {
         .build();
   }
 
-  private List<RatingDto> toDtoList(List<Rating> entityList) {
+  private List<ResponseRatingDto> toDtoList(List<Rating> entityList) {
     return entityList.stream().map(this::toDto).toList();
   }
 
-  private RatingDto toDto(Rating entity) {
-    return RatingDto.builder()
+  private ResponseRatingDto toDto(Rating entity) {
+    return ResponseRatingDto.builder()
         .content(entity.getContent())
         .username(entity.getUser().getUserName())
         .score(entity.getScore())

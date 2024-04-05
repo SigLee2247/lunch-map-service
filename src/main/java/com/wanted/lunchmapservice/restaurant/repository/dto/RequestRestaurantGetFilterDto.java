@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class RestaurantGetFilterDto {
+public class RequestRestaurantGetFilterDto {
   private String cityName;
   private String countryName;
 }
