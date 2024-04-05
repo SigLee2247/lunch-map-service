@@ -1,4 +1,4 @@
-package com.wanted.lunchmapservice.restaurant.repository.implement;
+package com.wanted.lunchmapservice.restaurant.repository;
 
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import com.wanted.lunchmapservice.restaurant.repository.dto.RestaurantGetFilterDto;

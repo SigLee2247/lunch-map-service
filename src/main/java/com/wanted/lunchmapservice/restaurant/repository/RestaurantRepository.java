@@ -1,7 +1,6 @@
 package com.wanted.lunchmapservice.restaurant.repository;
 
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
-import com.wanted.lunchmapservice.restaurant.repository.implement.RestaurantQueryRepository;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

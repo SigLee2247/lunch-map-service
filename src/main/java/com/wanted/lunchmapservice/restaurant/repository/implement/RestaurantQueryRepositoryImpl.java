@@ -8,6 +8,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
+import com.wanted.lunchmapservice.restaurant.repository.RestaurantQueryRepository;
 import com.wanted.lunchmapservice.restaurant.repository.dto.RestaurantGetFilterDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class RestaurantQueryRepositoryImpl implements  RestaurantQueryRepository{
+public class RestaurantQueryRepositoryImpl implements RestaurantQueryRepository {
   private final JPAQueryFactory query;
 
+  @Override
   public Page<Restaurant> findPageByFilter(Pageable pageable, RestaurantGetFilterDto condition){
     List<Restaurant> content = query
         .selectFrom(restaurant)
