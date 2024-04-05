@@ -4,6 +4,7 @@ import com.wanted.lunchmapservice.common.config.QueryDslConfig;
 import com.wanted.lunchmapservice.restaurant.controller.dto.NearRestaurantRequestDto;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import com.wanted.lunchmapservice.restaurant.repository.RestaurantRepository;
+import com.wanted.lunchmapservice.restaurant.repository.util.GeoLocationUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,6 +53,20 @@ class RestaurantRepositoryTest {
     Assertions.assertThat(resultByHaversine.getTotalElements()).isLessThanOrEqualTo(resultByEnhanced.getTotalElements());
   }
 
+  @Test
+  @DisplayName("인근지역 조회 레포지토리 테스트 : Haversine 공식 활용 시 상하 죄우의 좌표 값보다 작거나 같은 데이터를 가져야한다")
+  void findNearByRestaurantHaversineTest() {
+    // given
+    Page<Restaurant> resultList = repository.findNearByRestaurant(dto, pageable);
 
+    double diffLatitude = GeoLocationUtil.getDiffLatitude(range);
+    double diffLongitude = GeoLocationUtil.getDiffLongitude(lat,range);
+
+    for (Restaurant result : resultList) {
+      Assertions.assertThat(result.getLatitude()).isLessThanOrEqualTo(lat + diffLatitude).isGreaterThanOrEqualTo(lat - diffLatitude);
+      Assertions.assertThat(result.getLongitude()).isLessThanOrEqualTo(lon + diffLongitude).isGreaterThanOrEqualTo(lon - diffLongitude);
+    }
+
+  }
 
 }

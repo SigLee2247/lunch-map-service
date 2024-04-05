@@ -8,13 +8,10 @@ public class GeoLocationUtil {
   private static final Integer EARTH_RADIUS = 6371;
   private static final Double DEVIATION = 3.0;
   public static double getDiffLongitude(double lat, double range){
-    return ((1 / (EARTH_RADIUS * 1 * (Math.PI / 180) * Math.cos(Math.toRadians(lat))))) * getRange(range);
+    return ((1 / (EARTH_RADIUS * 1 * (Math.PI / 180) * Math.cos(Math.toRadians(lat))))) * range;
   }
   public static double getDiffLatitude(double range){
-    return ((1 / (EARTH_RADIUS * 1 * (Math.PI / 180)))) * getRange(range);
+    return ((1 / (EARTH_RADIUS * 1 * (Math.PI / 180)))) * range;
   }
 
-  private static double getRange(double range){
-    return (range / 2) + DEVIATION;
-  }
 }
