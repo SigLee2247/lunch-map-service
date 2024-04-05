@@ -22,10 +22,6 @@ spring:
     redis:
       host: 127.0.0.1
       port: 6379
-logging:
-  level:
-    org.hibernate.sql: info
-    org.hibernate.type.descriptor.sql: trace
 
 jwt:
   prefix: 'Bearer '
@@ -39,6 +35,6 @@ open-api:
     - https://openapi.gg.go.kr/Genrestrtlunch
     - https://openapi.gg.go.kr/Genrestrtcate
     - https://openapi.gg.go.kr/Genrestrtmovmntcook
-  key: 4649116924354fc182e7e611d7ba33d8
+  key: ${OPEN_API_KEY}
   type: xml
   size: 1000
