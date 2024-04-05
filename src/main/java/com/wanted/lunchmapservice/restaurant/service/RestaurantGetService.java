@@ -6,10 +6,12 @@ import com.wanted.lunchmapservice.common.dto.ResponseDto;
 import com.wanted.lunchmapservice.common.exception.CommonException;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantDetailDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantSimpleDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.RestaurantResponseDto;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import com.wanted.lunchmapservice.restaurant.mapper.RestaurantMapper;
 import com.wanted.lunchmapservice.restaurant.repository.RestaurantRepository;
 import com.wanted.lunchmapservice.restaurant.repository.dto.RequestRestaurantGetFilterDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.NearRestaurantRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,11 @@ public class RestaurantGetService {
   private Restaurant validRestaurant(Long restaurantId) {
     return repository.findByIdFetch(restaurantId)
         .orElseThrow(() -> new CommonException(HttpStatus.NOT_FOUND, "맛집 정보가 존재하지 않습니다."));
+  }
+
+  public ResponseDto<CustomPage<RestaurantResponseDto>> findNearbyRestaurant(
+      NearRestaurantRequestDto dto,Pageable pageable) {
+    return mapper.toResponseNearDto(repository.findNearByRestaurant(dto, pageable));
   }
 }
 
