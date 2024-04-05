@@ -1,8 +1,12 @@
 package com.wanted.lunchmapservice.restaurant.service.mock;
 
+import com.wanted.lunchmapservice.common.dto.ResponseDto;
 import com.wanted.lunchmapservice.location.entity.Location;
+import com.wanted.lunchmapservice.restaurant.controller.dto.GetRestaurantDetailResponseDto;
+import com.wanted.lunchmapservice.restaurant.controller.dto.LocationDto;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,6 +34,36 @@ public class RestaurantMock {
         .longitude(longitude)
         .latitude(latitude)
         .averageScore(averageScore)
+        .build();
+  }
+
+
+  public ResponseDto<GetRestaurantDetailResponseDto> getDetailResponse(Long id) {
+    return ResponseDto.<GetRestaurantDetailResponseDto>builder()
+        .data(createGetDetailDto(id))
+        .message(HttpStatus.OK.getReasonPhrase())
+        .code(HttpStatus.OK.value())
+        .build();
+  }
+
+  private GetRestaurantDetailResponseDto createGetDetailDto(Long id) {
+    return GetRestaurantDetailResponseDto.builder()
+        .restaurantId(getEntity(id).getId())
+        .averageScore(getEntity(id).getAverageScore())
+        .restaurantName(getEntity(id).getName())
+        .lotNumberAddress(getEntity(id).getLotNumberAddress())
+        .roadNameAddress(getEntity(id).getRoadNameAddress())
+        .location(createLocationDto(getEntity(id).getLocation()))
+        .zipCode(getEntity(id).getZipCode())
+        .build();
+  }
+
+  private LocationDto createLocationDto(Location entity) {
+    return LocationDto.builder()
+        .cityName(entity.getCityName())
+        .countryName(entity.getCountryName())
+        .longitude(entity.getLongitude())
+        .latitude(entity.getLatitude())
         .build();
   }
 
