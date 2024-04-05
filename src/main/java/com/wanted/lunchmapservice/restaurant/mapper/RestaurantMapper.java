@@ -24,6 +24,8 @@ public class RestaurantMapper {
         .restaurantId(entity.getId())
         .averageScore(entity.getAverageScore())
         .restaurantName(entity.getName())
+        .latitude(entity.getLatitude())
+        .longitude(entity.getLongitude())
         .lotNumberAddress(entity.getLotNumberAddress())
         .roadNameAddress(entity.getRoadNameAddress())
         .location(toDto(entity.getLocation()))

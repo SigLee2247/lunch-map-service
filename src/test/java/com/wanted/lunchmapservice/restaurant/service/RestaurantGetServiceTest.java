@@ -34,7 +34,7 @@ class RestaurantGetServiceTest {
 
   @Test
   @DisplayName("맛집 상세 조회 : 성공")
-  void get_restaurant_detail_success_test() {
+  void get_restaurant_detail_success_test() throws Exception {
     // given
     long requestId = 1L;
     Restaurant afterRepository = mock.getEntity(requestId);
@@ -49,6 +49,8 @@ class RestaurantGetServiceTest {
     assertThat(result.getData().roadNameAddress()).isEqualTo(mock.getRoadNameAddress());
     assertThat(result.getData().lotNumberAddress()).isEqualTo(mock.getLotNumberAddress());
     assertThat(result.getData().zipCode()).isEqualTo(mock.getZipCode());
+    assertThat(result.getData().longitude()).isEqualTo(mock.getLongitude());
+    assertThat(result.getData().latitude()).isEqualTo(mock.getLatitude());
     assertThat(result.getData().location().latitude()).isEqualTo(mock.getLatitude());
     assertThat(result.getData().location().longitude()).isEqualTo(mock.getLongitude());
     assertThat(result.getData().location().cityName()).isEqualTo(mock.getCityName());

@@ -79,6 +79,8 @@ class RestaurantControllerTest {
         .andExpect(jsonPath("$.data.roadNameAddress").isString())
         .andExpect(jsonPath("$.data.zipCode").isString())
         .andExpect(jsonPath("$.data.averageScore").isNumber())
+        .andExpect(jsonPath("$.data.longitude").isNumber())
+        .andExpect(jsonPath("$.data.latitude").isNumber())
         .andExpect(jsonPath("$.data.location").isMap())
         .andExpect(jsonPath("$.data.location.countryName").isString())
         .andExpect(jsonPath("$.data.location.longitude").isNumber())
