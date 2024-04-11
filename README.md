@@ -445,6 +445,9 @@ java -jar build/libs/lunchmapservice-0.0.1-SNAPSHOT.jar
 - **두 테이블 분리 시 insert, update가 2배 더 발생** but **테이블 분리를 통해 보다 유연하고 독립적인 테이블 주고 가질 수 있음**
 
 ### 대용량 insert, update에 대한 쿼리 최적화 **160s -> 34s 단축**
+<img src="https://github.com/SigLee2247/lunch-map-service/assets/116015708/a1cca23e-3e5f-41a9-9500-9e6a270a52db" alt="image" width="400" height="300">
+
+
 - JDBC properties 설정을 통한 쿼리 최적화
   - `jdbc.batch_size`, `order_inserts`, `order_updates` 설정 → 여러 개의 **SQL을 하나의 DB Connection으로 전달**
   - `rewriteBatchedStatements=true` 설정 → JDBC 내부적으로 각각의 insert문을 **하나의 bulk insert로 수정**
@@ -531,9 +534,8 @@ java -jar build/libs/lunchmapservice-0.0.1-SNAPSHOT.jar
 
 
 ## SequenceDiagram
-```mermaid
-
 ### 평점 추가 시퀀스 다이어 그램
+```mermaid
 sequenceDiagram
 	controller ->> service : evaluateRestaurant()
 	service ->> repository : findById()
