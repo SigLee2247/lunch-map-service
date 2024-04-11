@@ -46,4 +46,16 @@ public class Rating extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    public static Rating of(Integer score,String content, User user) {
+        return Rating.builder()
+            .score(score)
+            .content(content)
+            .user(user)
+            .build();
+    }
+
+    public void addRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }

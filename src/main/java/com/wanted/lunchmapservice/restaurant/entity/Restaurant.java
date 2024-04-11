@@ -88,6 +88,12 @@ public class Restaurant extends BaseTime {
             .averageScore(0.).build();
     }
 
+    public static Restaurant of(Long id) {
+        return Restaurant.builder()
+            .id(id)
+            .build();
+    }
+
     public boolean isSame(RawRestaurant rawRestaurant) {
         return name.equals(rawRestaurant.getName())
             && lotNumberAddress.equals(rawRestaurant.getLotNumberAddress());
@@ -103,7 +109,16 @@ public class Restaurant extends BaseTime {
         this.latitude = rawData.getLatitude();
     }
 
-    public void sortRatingList() {
-        ratingList.sort((d1, d2) -> d2.getId().compareTo(d1.getId()));
+    public void addRating(Rating rating) {
+        double savedScore = this.ratingList.stream().mapToInt(d->d.getScore()).sum();
+        this.ratingList.add(rating);
+        rating.addRestaurant(this);
+        calculateAverageScore(savedScore,rating.getScore(),ratingList.size());
+
+    }
+
+    private void calculateAverageScore(double savedScore, int newScore, int size) {
+        double avg = (savedScore + newScore) / size;
+        this.averageScore =  Math.round(avg * 10) /10.0;
     }
 }
