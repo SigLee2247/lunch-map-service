@@ -40,6 +40,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/reissue").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/reissue").permitAll()
+                        .requestMatchers("/api/restaurants/evaluation/{restaurantId}").authenticated()
+                        .requestMatchers("/api/restaurants").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(
