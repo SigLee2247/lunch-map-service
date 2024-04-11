@@ -1,132 +1,124 @@
 package com.wanted.lunchmapservice.restaurant.entity;
 
+import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.GenerationType.SEQUENCE;
+
+import com.wanted.lunchmapservice.common.BaseTime;
+import com.wanted.lunchmapservice.location.entity.Location;
 import com.wanted.lunchmapservice.rating.Rating;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @DynamicInsert
 @Entity
-public class Restaurant {
+public class Restaurant extends BaseTime {
 
     @Id
     @Column(name = "restaurant_id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = SEQUENCE, generator = "restaurant_seq")
+    @SequenceGenerator(name = "restaurant_seq", sequenceName = "restaurant_seq", allocationSize = 100)
     private Long id;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "SIGUN_NM", nullable = false)
-    private String sigunNm;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "SIGUN_CD", nullable = false)
-    private String sigunCd;
+    @Column(name = "lot_number_address", nullable = false)
+    private String lotNumberAddress;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "BIZPLC_NM", nullable = false)
-    private String bizplcNm;
+    @Column(name = "road_name_address", nullable = false)
+    private String roadNameAddress;
 
     @ColumnDefault("'EMPTY'")
-    @Column(name = "LICENSG_DE", nullable = false)
-    private String licensgDe;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "BSN_STATE_NM", nullable = false)
-    private String bsnStateNm;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "CLSBIZ_DE", nullable = false)
-    private String clsbizAr;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "LOCPLC_AR", nullable = false)
-    private String locplcAr;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "GRAD_FACLT_DIV_NM", nullable = false)
-    private String gradFacltDivNm;
+    @Column(name = "zip_code", nullable = false)
+    private String zipCode;
 
     @ColumnDefault("-1")
-    @Column(name = "MALE_ENFLPSN_CNT", nullable = false)
-    private Integer maleEnflpsnCnt;
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
 
     @ColumnDefault("-1")
-    @Column(name = "YY", nullable = false)
-    private Integer yy;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "MULTI_USE_BIZESTBL_YN", nullable = false)
-    private String multiUseBizestblYn;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "GRAD_DIV_NM", nullable = false)
-    private String gradDivNm;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "TOT_FACLT_SCALE", nullable = false)
-    private String totFacltScale;
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
 
     @ColumnDefault("-1")
-    @Column(name = "FEMALE_ENFLPSN_CNT", nullable = false)
-    private Integer femaleEnflpsnCnt;
+    @Column(name = "average_score", nullable = false)
+    private Double averageScore;
 
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "BSNSITE_CIRCUMFR_DIV_NM", nullable = false)
-    private String bsnsiteCircumfrDivNm;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "SANITTN_INDUTYPE_NM", nullable = false)
-    private String sanittnIndutypeNm;
+    @Default
+    @OneToMany(fetch = LAZY, cascade = CascadeType.PERSIST, mappedBy = "restaurant")
+    private List<Rating> ratingList = new ArrayList<>();
 
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "SANITTN_BIZCOND_NM", nullable = false)
-    private String sanittnBizcondNm;
 
-    @ColumnDefault("-1")
-    @Column(name = "TOT_EMPLY_CNT", nullable = false)
-    private Integer totEmplyCnt;
+    public static Restaurant of(Location location, RawRestaurant rawData) {
+        return Restaurant.builder()
+            .location(location)
+            .name(rawData.getName())
+            .lotNumberAddress(rawData.getLotNumberAddress())
+            .roadNameAddress(rawData.getRoadNameAddress())
+            .zipCode(rawData.getZipCode())
+            .longitude(rawData.getLongitude())
+            .latitude(rawData.getLatitude())
+            .averageScore(0.).build();
+    }
 
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "REFINE_LOTNO_ADDR", nullable = false)
-    private String refineLotnoArrd;
+    public static Restaurant of(Long id) {
+        return Restaurant.builder()
+            .id(id)
+            .build();
+    }
 
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "REFINE_ROADNM_ADDR", nullable = false)
-    private String refineRoadnmArrd;
+    public boolean isSame(RawRestaurant rawRestaurant) {
+        return name.equals(rawRestaurant.getName())
+            && lotNumberAddress.equals(rawRestaurant.getLotNumberAddress());
+    }
 
-    @ColumnDefault("-1")
-    @Column(name = "REFINE_ZIP_CD", nullable = false)
-    private Long refineZipCd;
+    public void update(Location location, RawRestaurant rawData) {
+        this.location = location;
+        this.name = rawData.getName();
+        this.lotNumberAddress = rawData.getLotNumberAddress();
+        this.roadNameAddress = rawData.getRoadNameAddress();
+        this.zipCode = rawData.getZipCode();
+        this.longitude = rawData.getLongitude();
+        this.latitude = rawData.getLatitude();
+    }
 
-    @ColumnDefault("-1")
-    @Column(name = "REFINE_WGS84_LOGT", nullable = false)
-    private Double refineWgs84Logt;
+    public void addRating(Rating rating) {
+        double savedScore = this.ratingList.stream().mapToInt(d->d.getScore()).sum();
+        this.ratingList.add(rating);
+        rating.addRestaurant(this);
+        calculateAverageScore(savedScore,rating.getScore(),ratingList.size());
 
-    @ColumnDefault("-1")
-    @Column(name = "REFINE_WGS84_LAT", nullable = false)
-    private Double refineWgs84Lat;
+    }
 
-    @ColumnDefault("-1")
-    @Column(name = "rating", nullable = false)
-    private Double rating;
-
-    @ColumnDefault("'EMPTY'")
-    @Column(name = "city_name", nullable = false)
-    private String cityName;
-
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private List<Rating> ratingList;
+    private void calculateAverageScore(double savedScore, int newScore, int size) {
+        double avg = (savedScore + newScore) / size;
+        this.averageScore =  Math.round(avg * 10) /10.0;
+    }
 }

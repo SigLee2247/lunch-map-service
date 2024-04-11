@@ -1,5 +1,6 @@
 package com.wanted.lunchmapservice.rating;
 
+import com.wanted.lunchmapservice.common.BaseTime;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
 import com.wanted.lunchmapservice.user.entity.User;
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -19,9 +21,10 @@ import org.hibernate.annotations.DynamicInsert;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 @DynamicInsert
 @Entity
-public class Rating {
+public class Rating extends BaseTime {
 
     @Id
     @Column(name = "rating_id", updatable = false)
@@ -43,4 +46,16 @@ public class Rating {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    public static Rating of(Integer score,String content, User user) {
+        return Rating.builder()
+            .score(score)
+            .content(content)
+            .user(user)
+            .build();
+    }
+
+    public void addRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }
