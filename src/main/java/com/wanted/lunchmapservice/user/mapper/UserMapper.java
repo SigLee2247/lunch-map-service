@@ -5,6 +5,7 @@ import com.wanted.lunchmapservice.common.dto.ResponseDto;
 import com.wanted.lunchmapservice.user.dto.request.UserPostRequestDto;
 import com.wanted.lunchmapservice.user.dto.response.UserIdResponseDto;
 import com.wanted.lunchmapservice.user.entity.User;
+import com.wanted.lunchmapservice.user.service.dto.UserGetDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,23 @@ public class UserMapper {
                 .build();
     }
 
+    public ResponseDto<UserGetDto> toResponseDto(User entity) {
+        return ResponseDto.<UserGetDto>builder()
+            .data(toGetDto(entity))
+            .message(HttpStatus.OK.getReasonPhrase())
+            .build();
+    }
+
     private UserIdResponseDto toIdResponse(User user) {
         return new UserIdResponseDto(user.getId());
+    }
+
+    public UserGetDto toGetDto(User user) {
+        return UserGetDto.builder()
+            .userId(user.getId())
+            .name(user.getUserName())
+            .lat(user.getLatitude())
+            .lon(user.getLongitude())
+            .build();
     }
 }

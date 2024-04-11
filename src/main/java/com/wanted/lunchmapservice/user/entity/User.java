@@ -44,4 +44,19 @@ public class User extends BaseTime {
     @Column(name = "service_access")
     private ServiceAccess serviceAccess;
 
+    public void changeLat(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void changeLon(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void changeServiceAccess(ServiceAccess access) {
+        this.serviceAccess = access;
+    }
+
+    public void changeUsername(String userName) {
+        this.userName = userName;
+    }
 }
