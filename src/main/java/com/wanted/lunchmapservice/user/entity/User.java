@@ -22,41 +22,47 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 public class User extends BaseTime {
 
-    @Id
-    @Column(name = "user_id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @Column(name = "user_id", updatable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "user_name", nullable = false)
-    private String userName;
+  @Column(name = "user_name", nullable = false)
+  private String userName;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+  @Column(name = "password", nullable = false)
+  private String password;
 
-    @Column(name = "latitude")
-    private Double latitude;
+  @Column(name = "latitude")
+  private Double latitude;
 
-    @Column(name = "longitude")
-    private Double longitude;
+  @Column(name = "longitude")
+  private Double longitude;
 
-    @Enumerated(EnumType.STRING)
-    @ColumnDefault("'NONE'")
-    @Column(name = "service_access")
-    private ServiceAccess serviceAccess;
+  @Enumerated(EnumType.STRING)
+  @ColumnDefault("'NONE'")
+  @Column(name = "service_access")
+  private ServiceAccess serviceAccess;
 
-    public void changeLat(Double latitude) {
-        this.latitude = latitude;
-    }
+  public static User of(Long userId){
+    return User.builder()
+        .id(userId)
+        .build();
+  }
 
-    public void changeLon(Double longitude) {
-        this.longitude = longitude;
-    }
+  public void changeLat(Double latitude) {
+    this.latitude = latitude;
+  }
 
-    public void changeServiceAccess(ServiceAccess access) {
-        this.serviceAccess = access;
-    }
+  public void changeLon(Double longitude) {
+    this.longitude = longitude;
+  }
 
-    public void changeUsername(String userName) {
-        this.userName = userName;
-    }
+  public void changeServiceAccess(ServiceAccess access) {
+    this.serviceAccess = access;
+  }
+
+  public void changeUsername(String userName) {
+    this.userName = userName;
+  }
 }

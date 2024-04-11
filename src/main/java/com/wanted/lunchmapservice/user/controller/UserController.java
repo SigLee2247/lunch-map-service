@@ -11,7 +11,6 @@ import com.wanted.lunchmapservice.user.utils.UriCreator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.net.URI;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +43,7 @@ public class UserController {
     return ResponseEntity.ok(getService.getUserInfo(userId));
   }
 
-  @PatchMapping("{userId}")
+  @PatchMapping("/{userId}")
   public ResponseEntity<ResponseDto<UserIdResponseDto>> patchUser(@PathVariable Long userId,
       @RequestBody UserPatchDto dto) {
     return ResponseEntity.ok(service.updateUser(userId, dto));

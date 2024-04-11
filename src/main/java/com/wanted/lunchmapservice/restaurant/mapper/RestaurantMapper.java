@@ -5,12 +5,15 @@ import com.wanted.lunchmapservice.common.dto.PageInfo;
 import com.wanted.lunchmapservice.common.dto.ResponseDto;
 import com.wanted.lunchmapservice.location.entity.Location;
 import com.wanted.lunchmapservice.rating.Rating;
+import com.wanted.lunchmapservice.restaurant.controller.dto.EvaluateRestaurantDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantDetailDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseGetRestaurantSimpleDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseLocationDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.ResponseRatingDto;
 import com.wanted.lunchmapservice.restaurant.controller.dto.RestaurantResponseDto;
 import com.wanted.lunchmapservice.restaurant.entity.Restaurant;
+import com.wanted.lunchmapservice.user.controller.dto.RestaurantIdResponseDto;
+import com.wanted.lunchmapservice.user.entity.User;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,17 @@ public class RestaurantMapper {
         .build();
   }
 
+  public ResponseDto<RestaurantIdResponseDto> toIdResponseDto(Restaurant entity) {
+    return ResponseDto.<RestaurantIdResponseDto>builder()
+        .data(toIdDto(entity))
+        .message(HttpStatus.OK.getReasonPhrase())
+        .code(HttpStatus.OK.value())
+        .build();
+  }
+
+  public Rating toEntity(Long userId, EvaluateRestaurantDto dto) {
+    return Rating.of(dto.score(), dto.content(), User.of(userId));
+  }
 
   public ResponseDto<CustomPage<ResponseGetRestaurantSimpleDto>> toResponseDto(
       Page<Restaurant> entityPage) {
@@ -133,5 +147,9 @@ public class RestaurantMapper {
         .username(entity.getUser().getUserName())
         .score(entity.getScore())
         .build();
+  }
+
+  private RestaurantIdResponseDto toIdDto(Restaurant entity) {
+    return RestaurantIdResponseDto.builder().restaurantId(entity.getId()).build();
   }
 }
