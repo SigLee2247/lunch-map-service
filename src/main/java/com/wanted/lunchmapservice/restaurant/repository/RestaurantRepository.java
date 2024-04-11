@@ -13,4 +13,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant,Long> , R
       "LEFT JOIN FETCH rr.user " +
       "WHERE r.id = :id")
   Optional<Restaurant> findByIdFetch(@Param("id") Long id);
+  @Query("SELECT r FROM Restaurant r " +
+      "LEFT JOIN FETCH r.ratingList rr " +
+      "WHERE r.id = :id")
+  Optional<Restaurant> findByIdFetchRating(@Param("id") Long id);
 }
