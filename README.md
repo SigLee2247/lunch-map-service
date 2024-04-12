@@ -449,7 +449,7 @@ java -jar build/libs/lunchmapservice-0.0.1-SNAPSHOT.jar
 
 
 - JDBC properties 설정을 통한 쿼리 최적화
-  - `jdbc.batch_size`, `order_inserts`, `order_updates` 설정 → 여러 개의 **SQL을 하나의 DB Connection으로 전달**
+  - `jdbc.batch_size`, `order_inserts`, `order_updates` 설정 → 여러 개의 **SQL 쿼리 종류 별 정렬**
   - `rewriteBatchedStatements=true` 설정 → JDBC 내부적으로 각각의 insert문을 **하나의 bulk insert로 수정**
 - Restaurant, Location 테이블의 키 매핑 전략 `IDENTITY` → `SEQUENCE`로 수정
     - Restaurant, Location 테이블은 대용량 insert, update가 발생하는 테이블
