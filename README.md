@@ -1,5 +1,8 @@
 # 지리기반 맛집 추천 웹 서비스 ‘Lunch Map’
 
+![image](https://github.com/SigLee2247/lunch-map-service/assets/116015708/ac303637-ec6e-42c2-95c7-06ef85460fd1)
+
+
 >💡 [공공 데이터](https://www.data.go.kr/tcs/dss/selectDataSetList.do?dType=API&keyword=%EA%B2%BD%EA%B8%B0%EB%8F%84+%EC%9D%BC%EB%B0%98%EC%9D%8C%EC%8B%9D%EC%A0%90&operator=AND&detailKeyword=&publicDataPk=&recmSe=&detailText=&relatedKeyword=&commaNotInData=&commaAndData=&commaOrData=&must_not=&tabId=&dataSetCoreTf=&coreDataNm=&sort=_score&relRadio=&orgFullName=&orgFilter=&org=&orgSearch=&currentPage=1&perPage=10&brm=&instt=&svcType=&kwrdArray=&extsn=&coreDataNmArray=&pblonsipScopeCode=)를 활용하여 지역 음식점 목록을 자동으로 업데이트 합니다.
 ><br/>사용자 위치에 따라 맛집 및 메뉴를 추천하여 더 나은 다양한 음식 경험을 제공하려 합니다.
 
